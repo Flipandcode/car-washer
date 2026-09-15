@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { X, Loader2, CheckCircle2 } from "lucide-react";
 import { markPaymentPaid } from "@/lib/actions/payments";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, todayString } from "@/lib/utils";
 import type { PaymentMethod } from "@/lib/types";
 
 const METHODS: PaymentMethod[] = ["Cash", "UPI", "Bank Transfer", "Other"];
@@ -30,7 +30,7 @@ export default function MarkPaidModal({
   const balanceDue = Math.max(amountDue - amountAlreadyPaid, 0);
   const [amount, setAmount] = useState(String(balanceDue || amountDue));
   const [method, setMethod] = useState<PaymentMethod>(defaultMethod);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(todayString());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);

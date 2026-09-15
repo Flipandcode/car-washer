@@ -27,15 +27,17 @@ export default function VehicleCard({ vehicle, customer, profile }: Props) {
   const isPendingPayment = payment && (payment.status === "PENDING" || payment.status === "PARTIAL");
   const stopped = vehicle.subscription_status === "STOPPED" || vehicle.subscription_status === "CANCELLED";
 
+  // useTransition's callback must return void, so the server action's promise
+  // is fired with `void` rather than awaited inside the transition.
   function handleStopResume() {
-    startTransition(async () => {
-      await setVehicleSubscriptionStatus(vehicle.id, customer.id, stopped ? "ACTIVE" : "STOPPED");
+    startTransition(() => {
+      void setVehicleSubscriptionStatus(vehicle.id, customer.id, stopped ? "ACTIVE" : "STOPPED");
     });
   }
 
   function handleDelete() {
-    startTransition(async () => {
-      await softDeleteVehicle(vehicle.id, customer.id);
+    startTransition(() => {
+      void softDeleteVehicle(vehicle.id, customer.id);
     });
   }
 

@@ -31,7 +31,9 @@ export default function CustomerActions({ customer }: { customer: Customer }) {
             </button>
             <button
               onClick={() => {
-                startTransition(() => toggleCustomerActive(customer.id, !customer.is_active));
+                startTransition(() => {
+                  void toggleCustomerActive(customer.id, !customer.is_active);
+                });
                 setMenuOpen(false);
               }}
               disabled={isPending}
